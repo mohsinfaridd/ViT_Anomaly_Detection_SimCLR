@@ -366,12 +366,20 @@ If you use this project, cite the associated research paper when its final citat
 
 ## 14. Contributing
 
-Suggestions, bug reports, and reproducibility improvements are welcome. When reporting an issue, include the notebook name, seed, runtime environment, configuration changes, and relevant error message.
+We welcome contributions! Feel free to open an issue or submit a pull request.
 
-<!-- Optional contributors image: replace YOUR_GITHUB_USERNAME, then remove this comment wrapper.
 <p align="center">
-  <img src="https://contrib.rocks/image?repo=YOUR_GITHUB_USERNAME/ViT_Anomaly_Detection_SimCLR" alt="Project contributors">
+  <a href="https://github.com/mohsinfaridd">
+    <img src="https://github.com/mohsinfaridd.png" width="90" alt="mohsinfaridd">
+  </a>
+  <a href="https://github.com/RashidRao-pk">
+    <img src="https://github.com/RashidRao-pk.png" width="90" alt="RashidRao-pk">
+  </a>
+  <a href="https://github.com/hakimziani">
+    <img src="https://github.com/hakimziani.png" width="90" alt="hakimziani">
+  </a>
 </p>
--->
 
-<!-- Add a license section and badge after choosing and committing a LICENSE file. -->
+<p align="center">
+  <b>Thank you to all our contributors!</b>
+</p>
