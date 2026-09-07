@@ -1,0 +1,5 @@
+seed,category,vmin_q01_raw_patch_distance,vmax_q99_raw_patch_distance,n_test_images_used_for_scale,n_raw_patch_values
+42,metal_nut,0.048262,0.271832,115,22540
+42,grid,0.117078,0.353463,78,15288
+42,screw,0.069938,0.251807,160,31360
+42,leather,0.092404,0.451771,124,24304

@@ -1,0 +1,78 @@
+# Protocol A — seed 2026 (v5p1_FINAL_FIXED_LOGSUMEXP)
+# Scientific settings match Code3_SEED_2026_MVTec.ipynb.
+# Only seed / checkpoint identity differ across seed YAMLs.
+
+seed: 2026
+version_tag: v5p1_FINAL_FIXED_LOGSUMEXP
+publication_seeds: [42, 123, 2026]
+selected_categories: all
+
+checkpoint_path: checkpoints/seed2026/ssl_best_checkpoint.pt
+
+image_size: 224
+eval_resize: 256
+backbone: vit_base_patch16_224
+pretrained: false
+projection_hidden_dim: 4096
+projection_dim: 256
+
+augmentation_profile: industrial_preserving_v1
+crop_scale_min: 0.60
+horizontal_flip_p: 0.50
+color_jitter_strength: 0.40
+hue_jitter: 0.05
+color_jitter_p: 0.70
+grayscale_p: 0.10
+gaussian_blur_p: 0.30
+
+epochs: 200
+batch_size: 16
+accumulation_steps: 2
+warmup_epochs: 10
+encoder_lr: 1.0e-4
+projector_lr: 3.0e-4
+weight_decay_encoder: 1.0e-2
+weight_decay_projector: 1.0e-4
+temperature: 0.10
+use_amp: true
+num_workers: 2
+eval_num_workers: 0
+
+ssl_val_fraction: 0.20
+detector_tune_fraction_of_ssl_val: 0.30
+
+eval_batch_size: 32
+threshold_quantile: 0.95
+knn_k: 3
+reference_bank_max_per_category: 1000
+normalize_encoder_features: true
+
+patch_layer_indices: [5, 8, 11]
+patch_projection_dim: 256
+patch_projection_seed_offset: 9107
+patch_candidate_max_per_category: 25000
+patch_prototype_count: 1024
+patch_knn_k: 3
+patch_kmeans_batch_size: 2048
+patch_kmeans_max_iter: 50
+patch_spatial_penalty: 0.0
+
+final_fixed_patch_aggregation: logsumexp_t4
+patch_aggregation_candidates: [logsumexp_t4]
+logsumexp_temperature: 4.0
+
+primary_detector: local_patch
+fixed_hybrid_global_weight: 0.25
+hybrid_global_weight: 0.25
+
+position_calibration_positive_only: false
+position_calibration_clip_z: 15.0
+robust_scale_eps: 1.0e-6
+
+localization_map_mode: raw_patch_knn
+pixel_aupro_max_fpr: 0.30
+pixel_aupro_thresholds: 100
+
+require_gpu: false
+quick_test: false
+final_eval_only: true

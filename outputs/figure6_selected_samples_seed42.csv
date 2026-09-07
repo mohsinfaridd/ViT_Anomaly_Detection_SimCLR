@@ -1,0 +1,5 @@
+seed,category,defect_type,path,image_rel,local_normalized_q095,selection_rule,path_confirmed_from_notebook
+42,metal_nut,color,/kaggle/input/mvtec-ad/metal_nut/test/color/016.png,metal_nut/test/color/016.png,3.318962,highest fixed-q=.95 local_normalized among true anomalous official-test images (notebook sort; no explicit path tie-break),True
+42,grid,thread,/kaggle/input/mvtec-ad/grid/test/thread/010.png,grid/test/thread/010.png,5.581164,highest fixed-q=.95 local_normalized among true anomalous official-test images (notebook sort; no explicit path tie-break),True
+42,screw,scratch_neck,,screw/test/scratch_neck/<basename_truncated_in_notebook_display>,2.913489,highest fixed-q=.95 local_normalized among true anomalous official-test images (notebook sort; no explicit path tie-break),False
+42,leather,cut,/kaggle/input/mvtec-ad/leather/test/cut/003.png,leather/test/cut/003.png,2.188993,highest fixed-q=.95 local_normalized among true anomalous official-test images (notebook sort; no explicit path tie-break),True

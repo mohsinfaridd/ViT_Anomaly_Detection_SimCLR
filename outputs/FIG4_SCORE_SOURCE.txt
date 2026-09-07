@@ -1,0 +1,3 @@
+Raw per-image local_normalized scores were not present under outputs/ or embedded as a full table in the executed notebooks.
+Figure 4 panel (b) uses fig4_test_score_histogram_seed42.csv digitized from the notebook-exported SVG protocolA_test_score_distribution.svg (identical to Manuscript/FIGURES).
+If protocolA_official_test_predictions.csv (seed 42) becomes available, place columns path,binary_label,local_normalized into outputs/fig4_test_scores_seed42.csv and re-run fig4_training_and_scores.py.

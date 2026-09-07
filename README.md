@@ -64,6 +64,35 @@ The links below assume the notebooks are stored in the repository's `notebooks/`
 
 The reference notebook uses the development configuration `v5p1_local_primary_rawloc`. The final notebooks use `v5p1_FINAL_FIXED_LOGSUMEXP`, with `logsumexp_t4` fixed before the reruns.
 
+## Python package structure
+
+The modular package under `src/` is extracted from the final seed notebooks
+(`v5p1_FINAL_FIXED_LOGSUMEXP`). Notebooks remain the scientific audit trail;
+numerical settings are unchanged.
+
+| Module | Role |
+|---|---|
+| `src/config.py` | Dataclass Protocol A configuration and YAML loading |
+| `src/model.py` | `SimCLRv2ViT`, checkpoint load/freeze helpers |
+| `src/data.py` | MVTec indexing, splits, SSL vs eval transforms |
+| `src/features.py` | Multilayer patch features and fixed QR projection |
+| `src/anomaly_scoring.py` | Prototypes, kNN, `logsumexp_t4` aggregation, hybrid ablation |
+| `src/calibration.py` | Position MAD calibration and q=0.95 image calibration |
+| `src/localization.py` | RAW patch-score → 224×224 maps; visualization limits |
+| `src/metrics.py` | Image/pixel metrics and multi-seed sample SD (`ddof=1`) |
+| `src/protocol_a.py` | Known-category Protocol A orchestration API |
+
+Example (portable paths; no notebook Drive mounts required):
+
+```bash
+pip install -r requirements.txt
+python scripts/run_protocol_a.py --config configs/seed42.yaml --data-root /path/to/mvtec-ad
+```
+
+Seed wrappers: `scripts/run_seed42.py`, `scripts/run_seed123.py`, `scripts/run_seed2026.py`.
+
+See also [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md) and [checkpoints/README.md](checkpoints/README.md).
+
 ## 3. Start with the Environment
 
 <details>
@@ -355,6 +384,36 @@ Figures can be added later in an `images/` folder at the repository root. Sugges
 - Retain all three seed results and report their variability.
 - Report runtime measurements with hardware and batch-size details.
 
+## Reproducing paper figures
+
+Standalone scripts under `figure_scripts/` regenerate manuscript Figures 4–7 into `figures/` as:
+
+- **PDF** — manuscript version
+- **SVG** — editable vector backup
+- **PNG** — 300-dpi preview
+
+```bash
+python figure_scripts/fig4_training_and_scores.py
+python figure_scripts/fig5_global_local_hybrid.py
+python figure_scripts/fig6_localization_examples.py --data-root /path/to/mvtec-ad --checkpoint-root checkpoints
+python figure_scripts/fig7_pixel_roc_auc.py
+```
+
+Or generate all available figures from archived `outputs/` CSVs:
+
+```bash
+python figure_scripts/generate_all.py
+```
+
+| Figure | Scope |
+|---|---|
+| Fig. 4 | Representative seed 42 only |
+| Fig. 5 | Three-seed aggregation |
+| Fig. 6 | Qualitative seed 42 only (needs MVTec/checkpoint, or a verified final asset) |
+| Fig. 7 | Three-seed aggregation |
+
+Figures 4, 5, and 7 are intended to reproduce from CSV tables under `outputs/` without re-running the neural network. Figure 6 uses raw-patch localization and may require the MVTec dataset plus the seed-42 checkpoint.
+
 ## 13. References and Citation
 
 - [MVTec AD dataset and original publication information](https://www.mvtec.com/research-teaching/datasets/mvtec-ad)
@@ -362,7 +421,9 @@ Figures can be added later in an `images/` folder at the repository root. Sugges
 
 <!-- Add the finalized paper title, authors, venue/year, DOI or preprint URL, and BibTeX here when available. -->
 
-If you use this project, cite the associated research paper when its final citation is available and acknowledge the MVTec AD dataset.
+If you use this repository, please cite the associated paper/software.
+Citation metadata are available in [`CITATION.cff`](CITATION.cff).
+Acknowledge the MVTec AD dataset when applicable.
 
 ## 14. Contributing
 

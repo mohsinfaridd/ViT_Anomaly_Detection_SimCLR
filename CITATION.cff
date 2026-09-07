@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use this software or repository in your research, please cite the associated work."
+type: software
+title: "Self-Supervised Multi-Layer Vision Transformer Representations for Industrial Anomaly Detection and Localization"
+version: "1.0.0"
+license: MIT
+repository-code: "https://github.com/mohsinfaridd/ViT_Anomaly_Detection_SimCLR"
+authors:
+  - family-names: "Farid"
+    given-names: "Mohsin"
+  - family-names: "Raza"
+    given-names: "Muhammad Asif"
+  - family-names: "Ziani"
+    given-names: "Abdelhakim"
+  - family-names: "Rashid"
+    given-names: "Muhammad"
+abstract: >-
+  This repository provides the implementation, reproducibility code,
+  evaluation notebooks, figure-generation scripts, and analysis utilities for a
+  self-supervised Vision Transformer study of industrial anomaly detection and
+  localization on MVTec AD. Protocol A performs category-conditioned binary
+  normal-versus-anomaly detection with known category identity at inference,
+  using multi-layer ViT patch representations, normal prototype memories,
+  normal-only calibration, and raw patch-distance localization.
+keywords:
+  - industrial anomaly detection
+  - anomaly localization
+  - Vision Transformer
+  - ViT
+  - self-supervised learning
+  - SimCLR
+  - MVTec AD
+  - computer vision
+  - industrial inspection
+  - reproducibility
