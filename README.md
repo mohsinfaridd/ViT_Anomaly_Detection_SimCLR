@@ -32,14 +32,14 @@ The notebooks cover **15 MVTec AD categories** and include fixed-configuration e
 
 The implementation contains two distinct evaluation protocols:
 
-| Component | Protocol A — Detection and localization | Protocol B — Supervised classification |
-|---|---|---|
-| Purpose | Detect normal versus anomalous images and localize defects | Predict category, anomaly status, and defect type |
-| Encoder | Self-supervised ViT using official `train/good` data | Same encoder, frozen during probe training |
-| Downstream method | Normal reference banks and patch kNN scoring | Supervised linear heads |
-| Evaluation data | Full official MVTec test split | Held-out subset of a separate split inside official test |
+| Component               | Protocol A — Detection and localization                                         | Protocol B — Supervised classification                     |
+| ----------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| Purpose                 | Detect normal versus anomalous images and localize defects                      | Predict category, anomaly status, and defect type          |
+| Encoder                 | Self-supervised ViT using official `train/good` data                            | Same encoder, frozen during probe training                 |
+| Downstream method       | Normal reference banks and patch kNN scoring                                    | Supervised linear heads                                    |
+| Evaluation data         | Full official MVTec test split                                                  | Held-out subset of a separate split inside official test   |
 | Labels used for fitting | Normal training/validation membership; synthetic anomalies for diagnostic audit | Labeled downstream training images, including real defects |
-| Interpretation | Normal-only anomaly detection benchmark | Separate supervised representation evaluation |
+| Interpretation          | Normal-only anomaly detection benchmark                                         | Separate supervised representation evaluation              |
 
 **Primary detector:** local patch scoring. Global-only scoring and fixed **25% global / 75% local** fusion are secondary ablations.
 
@@ -55,12 +55,12 @@ Multi-class category and defect-type classification belongs to **Protocol B**; P
 
 The links below assume the notebooks are stored in the repository's `notebooks/` folder.
 
-| Notebook | Seed | Role |
-|---|---:|---|
-| [Code1_SEED_42_MVTec.ipynb](notebooks/Code1_SEED_42_MVTec.ipynb) | 42 | Final fixed-aggregation experiment |
-| [Code2_SEED_123_MVTec.ipynb](notebooks/Code2_SEED_123_MVTec.ipynb) | 123 | Final fixed-aggregation experiment |
-| [Code3_SEED_2026_MVTec.ipynb](notebooks/Code3_SEED_2026_MVTec.ipynb) | 2026 | Final fixed-aggregation experiment |
-| [Reference code.ipynb](notebooks/Reference%20code.ipynb) | Configurable | Development workflow, SSL training, and aggregation selection |
+| Notebook                                                             |         Seed | Role                                                          |
+| -------------------------------------------------------------------- | -----------: | ------------------------------------------------------------- |
+| [Code1_SEED_42_MVTec.ipynb](notebooks/Code1_SEED_42_MVTec.ipynb)     |           42 | Final fixed-aggregation experiment                            |
+| [Code2_SEED_123_MVTec.ipynb](notebooks/Code2_SEED_123_MVTec.ipynb)   |          123 | Final fixed-aggregation experiment                            |
+| [Code3_SEED_2026_MVTec.ipynb](notebooks/Code3_SEED_2026_MVTec.ipynb) |         2026 | Final fixed-aggregation experiment                            |
+| [Reference code.ipynb](notebooks/Reference%20code.ipynb)             | Configurable | Development workflow, SSL training, and aggregation selection |
 
 The reference notebook uses the development configuration `v5p1_local_primary_rawloc`. The final notebooks use `v5p1_FINAL_FIXED_LOGSUMEXP`, with `logsumexp_t4` fixed before the reruns.
 
@@ -70,17 +70,17 @@ The modular package under `src/` is extracted from the final seed notebooks
 (`v5p1_FINAL_FIXED_LOGSUMEXP`). Notebooks remain the scientific audit trail;
 numerical settings are unchanged.
 
-| Module | Role |
-|---|---|
-| `src/config.py` | Dataclass Protocol A configuration and YAML loading |
-| `src/model.py` | `SimCLRv2ViT`, checkpoint load/freeze helpers |
-| `src/data.py` | MVTec indexing, splits, SSL vs eval transforms |
-| `src/features.py` | Multilayer patch features and fixed QR projection |
+| Module                   | Role                                                         |
+| ------------------------ | ------------------------------------------------------------ |
+| `src/config.py`          | Dataclass Protocol A configuration and YAML loading          |
+| `src/model.py`           | `SimCLRv2ViT`, checkpoint load/freeze helpers                |
+| `src/data.py`            | MVTec indexing, splits, SSL vs eval transforms               |
+| `src/features.py`        | Multilayer patch features and fixed QR projection            |
 | `src/anomaly_scoring.py` | Prototypes, kNN, `logsumexp_t4` aggregation, hybrid ablation |
-| `src/calibration.py` | Position MAD calibration and q=0.95 image calibration |
-| `src/localization.py` | RAW patch-score → 224×224 maps; visualization limits |
-| `src/metrics.py` | Image/pixel metrics and multi-seed sample SD (`ddof=1`) |
-| `src/protocol_a.py` | Known-category Protocol A orchestration API |
+| `src/calibration.py`     | Position MAD calibration and q=0.95 image calibration        |
+| `src/localization.py`    | RAW patch-score → 224×224 maps; visualization limits         |
+| `src/metrics.py`         | Image/pixel metrics and multi-seed sample SD (`ddof=1`)      |
+| `src/protocol_a.py`      | Known-category Protocol A orchestration API                  |
 
 Example (portable paths; no notebook Drive mounts required):
 
@@ -183,11 +183,11 @@ For Windows, use a raw string such as `r"S:\Datasets\mvtec-ad"`.
 
 The root should contain category folders. For example, `bottle/` contains:
 
-| Relative path | Contents |
-|---|---|
-| `bottle/train/good/` | Normal training images |
-| `bottle/test/good/` | Normal test images |
-| `bottle/test/<defect_type>/` | Defective test images |
+| Relative path                        | Contents                   |
+| ------------------------------------ | -------------------------- |
+| `bottle/train/good/`                 | Normal training images     |
+| `bottle/test/good/`                  | Normal test images         |
+| `bottle/test/<defect_type>/`         | Defective test images      |
 | `bottle/ground_truth/<defect_type>/` | Corresponding defect masks |
 
 Preserve the original category and defect folder names.
@@ -218,22 +218,22 @@ No public checkpoint download URL is supplied here. Make the matching checkpoint
 <details>
 <summary><strong>5.2 Default SSL configuration</strong></summary>
 
-| Parameter | Value |
-|---|---|
-| Backbone | `vit_base_patch16_224` |
-| External pretrained weights | Disabled: `pretrained=False` |
-| Input size | 224 × 224 |
-| Projection hidden / output dimensions | 4096 / 256 |
-| Maximum epochs / early-stopping patience | 200 / 30 |
-| Contrastive batch size | 16 |
-| Gradient accumulation | 2 steps |
-| Optimizer | AdamW |
-| Encoder / projector learning rate | `1e-4` / `3e-4` |
-| Encoder / projector weight decay | `1e-2` / `1e-4` |
-| Warmup epochs | 10 |
-| NT-Xent temperature | 0.10 |
-| Gradient clipping | 1.0 |
-| Mixed precision | Enabled |
+| Parameter                                | Value                        |
+| ---------------------------------------- | ---------------------------- |
+| Backbone                                 | `vit_base_patch16_224`       |
+| External pretrained weights              | Disabled: `pretrained=False` |
+| Input size                               | 224 × 224                    |
+| Projection hidden / output dimensions    | 4096 / 256                   |
+| Maximum epochs / early-stopping patience | 200 / 30                     |
+| Contrastive batch size                   | 16                           |
+| Gradient accumulation                    | 2 steps                      |
+| Optimizer                                | AdamW                        |
+| Encoder / projector learning rate        | `1e-4` / `3e-4`              |
+| Encoder / projector weight decay         | `1e-2` / `1e-4`              |
+| Warmup epochs                            | 10                           |
+| NT-Xent temperature                      | 0.10                         |
+| Gradient clipping                        | 1.0                          |
+| Mixed precision                          | Enabled                      |
 
 Gradient accumulation changes the optimizer update batch, but contrastive negatives are formed within each micro-batch.
 
@@ -253,20 +253,20 @@ Gradient accumulation changes the optimizer update batch, but contrastive negati
 
 ### Fixed detector configuration
 
-| Setting | Value |
-|---|---|
-| Primary detector | `local_patch` |
-| Transformer blocks | 6, 9, 12 (`patch_layer_indices=(5, 8, 11)`) |
-| Patch projection dimension | 256 |
-| Patch prototypes per category | 1024 |
-| Patch kNN / global kNN | `k=3` / `k=3` |
-| Spatial penalty | 0.00 |
-| Image aggregation | `logsumexp_t4` |
-| Normal calibration quantile | 0.95 |
-| Localization map | `raw_patch_knn` |
-| Secondary hybrid | 25% global + 75% local |
-| AUPRO maximum false-positive rate | 0.30 |
-| Bootstrap iterations | 1000 |
+| Setting                           | Value                                       |
+| --------------------------------- | ------------------------------------------- |
+| Primary detector                  | `local_patch`                               |
+| Transformer blocks                | 6, 9, 12 (`patch_layer_indices=(5, 8, 11)`) |
+| Patch projection dimension        | 256                                         |
+| Patch prototypes per category     | 1024                                        |
+| Patch kNN / global kNN            | `k=3` / `k=3`                               |
+| Spatial penalty                   | 0.00                                        |
+| Image aggregation                 | `logsumexp_t4`                              |
+| Normal calibration quantile       | 0.95                                        |
+| Localization map                  | `raw_patch_knn`                             |
+| Secondary hybrid                  | 25% global + 75% local                      |
+| AUPRO maximum false-positive rate | 0.30                                        |
+| Bootstrap iterations              | 1000                                        |
 
 Official normal training images are split into **80% SSL training and 20% SSL validation**. The validation pool is subdivided into **30% detector tuning and 70% detector calibration**. In the final notebooks, the synthetic branch audits the already-fixed aggregation rule.
 
@@ -282,13 +282,13 @@ Protocol B creates a separate supervised downstream split inside the official te
 
 The encoder remains frozen. Linear heads learn category, binary anomaly status, and defect-type predictions. The default feature mode is `global_plus_patch_stats`, and defect prediction uses a category-constrained hierarchical rule.
 
-| Setting | Value |
-|---|---|
-| Maximum probe epochs | 200 |
-| Batch size | 128 |
-| Learning rate | `1e-3` |
-| Weight decay | `1e-4` |
-| Early-stopping patience | 30 |
+| Setting                                  | Value           |
+| ---------------------------------------- | --------------- |
+| Maximum probe epochs                     | 200             |
+| Batch size                               | 128             |
+| Learning rate                            | `1e-3`          |
+| Weight decay                             | `1e-4`          |
+| Early-stopping patience                  | 30              |
 | Category / anomaly / defect loss weights | 1.0 / 1.0 / 1.0 |
 
 Report these results as **supervised downstream classification**, separately from the normal-only Protocol A benchmark.
@@ -301,28 +301,28 @@ Each run uses a version tag, seed, and configuration hash in its directory name.
 /content/drive/MyDrive/MVTec_SimCLR_ViT_PATCH_PUBLICATION/<run_name>/
 ```
 
-| Folder | Contents |
-|---|---|
-| `metadata/` | Dataset indices and split CSV files |
-| `cache/` | Cached representations |
-| `results/models/` | SSL and downstream checkpoints |
-| `results/patch_banks/` | Category-specific patch prototypes |
-| `results/tables/` | Predictions, metrics, and training histories |
-| `results/figures/` | Generated plots |
+| Folder                 | Contents                                     |
+| ---------------------- | -------------------------------------------- |
+| `metadata/`            | Dataset indices and split CSV files          |
+| `cache/`               | Cached representations                       |
+| `results/models/`      | SSL and downstream checkpoints               |
+| `results/patch_banks/` | Category-specific patch prototypes           |
+| `results/tables/`      | Predictions, metrics, and training histories |
+| `results/figures/`     | Generated plots                              |
 
 <details>
 <summary><strong>Key files to inspect</strong></summary>
 
-| File | Purpose |
-|---|---|
-| `protocolA_official_test_predictions.csv` | Image-level Protocol A predictions |
-| `protocolA_primary_per_category_metrics.csv` | Primary detector metrics by category |
-| `protocolA_per_category_pixel_metrics.csv` | Localization metrics by category |
-| `protocolA_ablation_metrics.csv` | Global/local/hybrid comparison |
-| `protocolA_v5p1_publication_macro_summary.csv` | Macro summary |
-| `protocolA_primary_bootstrap_95ci.csv` | Bootstrap uncertainty estimates |
-| `protocolB_downstream_test_predictions.csv` | Held-out supervised predictions |
-| `protocolB_multiclass_summary.csv` | Downstream classification summary |
+| File                                           | Purpose                              |
+| ---------------------------------------------- | ------------------------------------ |
+| `protocolA_official_test_predictions.csv`      | Image-level Protocol A predictions   |
+| `protocolA_primary_per_category_metrics.csv`   | Primary detector metrics by category |
+| `protocolA_per_category_pixel_metrics.csv`     | Localization metrics by category     |
+| `protocolA_ablation_metrics.csv`               | Global/local/hybrid comparison       |
+| `protocolA_v5p1_publication_macro_summary.csv` | Macro summary                        |
+| `protocolA_primary_bootstrap_95ci.csv`         | Bootstrap uncertainty estimates      |
+| `protocolB_downstream_test_predictions.csv`    | Held-out supervised predictions      |
+| `protocolB_multiclass_summary.csv`             | Downstream classification summary    |
 
 The aggregation cell saves these files directly under `PROJECT_ROOT`:
 
@@ -337,14 +337,14 @@ Use the complete final-run exports to populate publication tables. Keep seed var
 
 Figures can be added later in an `images/` folder at the repository root. Suggested filenames:
 
-| Image | Content |
-|---|---|
-| `framework_overview.png` | Overall method and protocol diagram |
-| `ssl_training_loss.png` | SSL training and validation loss |
-| `protocol_a_score_distribution.png` | Normal/anomalous score distributions |
-| `detector_ablation.png` | Global, local, and hybrid comparison |
-| `localization_examples.png` | Input images, masks, and anomaly maps |
-| `protocol_b_confusion_matrix.png` | Downstream classification results |
+| Image                               | Content                               |
+| ----------------------------------- | ------------------------------------- |
+| `framework_overview.png`            | Overall method and protocol diagram   |
+| `ssl_training_loss.png`             | SSL training and validation loss      |
+| `protocol_a_score_distribution.png` | Normal/anomalous score distributions  |
+| `detector_ablation.png`             | Global, local, and hybrid comparison  |
+| `localization_examples.png`         | Input images, masks, and anomaly maps |
+| `protocol_b_confusion_matrix.png`   | Downstream classification results     |
 
 <!-- Upload the images, then remove this comment wrapper to display them.
 ### SSL Training
@@ -365,16 +365,16 @@ Figures can be added later in an `images/` folder at the repository root. Sugges
 
 ## 11. Troubleshooting
 
-| Problem | What to check |
-|---|---|
-| No compatible SSL checkpoint | Confirm the seed, checkpoint configuration, and search location under `PROJECT_ROOT`; generate the checkpoint with the reference workflow if needed. |
-| CUDA unavailable | Enable a Colab GPU or install the appropriate CUDA-enabled PyTorch build. |
-| GPU out of memory | Close other GPU workloads; reduce evaluation batch size if needed and record the change. Changing SSL batch size creates a different training configuration. |
-| Dataset root not found | Set `manual_mvtec_root` to the directory containing all category folders. |
-| Drive mount fails locally | Disable Drive and edit the non-Drive `PROJECT_ROOT` assignment before executing setup. |
-| Embedding cache mismatch | Regenerate caches through the notebook; preserve strict cache validation. |
-| Missing seed in summary | Complete the missing run under the shared project root and rerun aggregation. |
-| Images do not display | Match the filename and case exactly, and remove the surrounding HTML comment markers. |
+| Problem                      | What to check                                                                                                                                                |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| No compatible SSL checkpoint | Confirm the seed, checkpoint configuration, and search location under `PROJECT_ROOT`; generate the checkpoint with the reference workflow if needed.         |
+| CUDA unavailable             | Enable a Colab GPU or install the appropriate CUDA-enabled PyTorch build.                                                                                    |
+| GPU out of memory            | Close other GPU workloads; reduce evaluation batch size if needed and record the change. Changing SSL batch size creates a different training configuration. |
+| Dataset root not found       | Set `manual_mvtec_root` to the directory containing all category folders.                                                                                    |
+| Drive mount fails locally    | Disable Drive and edit the non-Drive `PROJECT_ROOT` assignment before executing setup.                                                                       |
+| Embedding cache mismatch     | Regenerate caches through the notebook; preserve strict cache validation.                                                                                    |
+| Missing seed in summary      | Complete the missing run under the shared project root and rerun aggregation.                                                                                |
+| Images do not display        | Match the filename and case exactly, and remove the surrounding HTML comment markers.                                                                        |
 
 ## 12. Reproducibility Notes
 
@@ -405,12 +405,12 @@ Or generate all available figures from archived `outputs/` CSVs:
 python figure_scripts/generate_all.py
 ```
 
-| Figure | Scope |
-|---|---|
-| Fig. 4 | Representative seed 42 only |
-| Fig. 5 | Three-seed aggregation |
+| Figure | Scope                                                                        |
+| ------ | ---------------------------------------------------------------------------- |
+| Fig. 4 | Representative seed 42 only                                                  |
+| Fig. 5 | Three-seed aggregation                                                       |
 | Fig. 6 | Qualitative seed 42 only (needs MVTec/checkpoint, or a verified final asset) |
-| Fig. 7 | Three-seed aggregation |
+| Fig. 7 | Three-seed aggregation                                                       |
 
 Figures 4, 5, and 7 are intended to reproduce from CSV tables under `outputs/` without re-running the neural network. Figure 6 uses raw-patch localization and may require the MVTec dataset plus the seed-42 checkpoint.
 
@@ -427,17 +427,11 @@ Acknowledge the MVTec AD dataset when applicable.
 
 ## 14. Contributing
 
-We welcome contributions! Feel free to open an issue or submit a pull request.
+We welcome contributions! Check out our [Contributing Guide](CONTRIBUTING.md) to get started.
 
 <p align="center">
-  <a href="https://github.com/mohsinfaridd">
-    <img src="https://github.com/mohsinfaridd.png" width="90" alt="mohsinfaridd">
-  </a>
-  <a href="https://github.com/RashidRao-pk">
-    <img src="https://github.com/RashidRao-pk.png" width="90" alt="RashidRao-pk">
-  </a>
-  <a href="https://github.com/hakimziani">
-    <img src="https://github.com/hakimziani.png" width="90" alt="hakimziani">
+  <a href="https://github.com/mohsinfaridd/ViT_Anomaly_Detection_SimCLR/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=mohsinfaridd/ViT_Anomaly_Detection_SimCLR" alt="Contributors to AD/MultiPointThreshold" />
   </a>
 </p>
 

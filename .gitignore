@@ -141,3 +141,7 @@ outputs/**/*.npz
 *.fls
 *.out
 *.synctex.gz
+
+
+# NOTEBOOK RESULTS
+notebooks/MVTec_SimCLR_ViT_PATCH_PUBLICATION/*
