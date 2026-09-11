@@ -431,7 +431,7 @@ We welcome contributions! Check out our [Contributing Guide](CONTRIBUTING.md) to
 
 <p align="center">
   <a href="https://github.com/mohsinfaridd/ViT_Anomaly_Detection_SimCLR/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=mohsinfaridd/ViT_Anomaly_Detection_SimCLR" alt="Contributors to AD/MultiPointThreshold" />
+    <img src="https://contrib.rocks/image?repo=mohsinfaridd/ViT_Anomaly_Detection_SimCLR" alt="Contributors to AD/ViT_Anomaly_Detection_SimCLR" />
   </a>
 </p>
 
