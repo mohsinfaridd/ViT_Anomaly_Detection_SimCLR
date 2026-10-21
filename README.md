@@ -414,12 +414,15 @@ python figure_scripts/generate_all.py
 
 Figures 4, 5, and 7 are intended to reproduce from CSV tables under `outputs/` without re-running the neural network. Figure 6 uses raw-patch localization and may require the MVTec dataset plus the seed-42 checkpoint.
 
-## 13. References and Citation
+<!-- Add the finalized paper title, authors, venue/year, DOI or preprint URL, and BibTeX here when available. -->
+
+## 13. Acknowledgments
+
+Authors acknowledgs the following resources which are used for initial ideas:
 
 - [MVTec AD dataset and original publication information](https://www.mvtec.com/research-teaching/datasets/mvtec-ad)
 - [PyTorch installation documentation](https://pytorch.org/get-started/locally/)
-
-<!-- Add the finalized paper title, authors, venue/year, DOI or preprint URL, and BibTeX here when available. -->
+- [Anomaly Detection Models, Codes, Organization](https://github.com/rashidrao-pk/anomaly_detection_trust_case_study)
 
 If you use this repository, please cite the associated paper/software.
 Citation metadata are available in [`CITATION.cff`](CITATION.cff).
